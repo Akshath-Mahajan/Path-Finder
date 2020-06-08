@@ -1,0 +1,64 @@
+body{
+    background-image: linear-gradient(to right, #cff9ff,#84CEEB, #5680E9);
+}
+.box{
+    display: flex;
+    flex-direction: column;
+    
+    height: 100vh;
+}
+header{
+    text-align: center;
+    font-family: 'Amatic SC';
+    font-size: x-large;
+    font-weight: bolder;
+    margin-top: 0px;
+}
+
+.home{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: inherit;
+    height: 90%;
+}
+.startmap{
+    font-family: 'Pacifico';
+    font-size: 5vh;
+}
+.content{
+    
+    border: #000000 2px solid;
+    width: 90vw;
+    height: 90vh;
+    background-color: whitesmoke;
+    text-align: center;
+    margin: auto;   
+    overflow: hidden;
+    overflow-y: visible;
+    -webkit-box-shadow: 0 0 15px #fff;
+    box-shadow: 0 0 15px #fff;
+}
+/*Navbar on page 2:*/
+.controls{
+    position: relative;
+    right: 2px;
+    display: flex;
+    flex-direction: row;
+    height: 80px;
+    width: inherit;
+    border: 2px solid black;
+    background-color: #000000bb;
+}
+form{
+    width: inherit;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    
+}
+input{
+    text-align: center;
+}

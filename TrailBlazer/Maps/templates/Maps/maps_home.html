@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <div>
-        <a href="{%url 'maps-map'%}"> Open Maps!</a>
+{% extends "Maps/base.html"%}
+{%block title%}Test123{%endblock%}
+{%block header%} Trail Blazer {%endblock%}
+{%block content%}
+    <div class='home'>
+    <a href="{%url 'maps-map'%}" class='startmap'>Start Map</a><br>
+    Welcome to TrailBlazer: A web application that implements various custom optimal path finding algorithm
     </div>
-</body>
-</html>
+{%endblock%}
