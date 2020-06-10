@@ -1,6 +1,25 @@
-from .models import Nodes
-from .models import DestinationNodes
-from .models import Edges
+#Run in manage.py shell
+from Maps.models import Nodes
+from Maps.models import DestinationNodes
+from Maps.models import Edges
+import math
+
+
+def distance(origin, destination):
+    lat1, lon1 = origin
+    lat2, lon2 = destination
+    radius = 6371  # km
+
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = (math.sin(dlat / 2) * math.sin(dlat / 2) +
+         math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) *
+         math.sin(dlon / 2) * math.sin(dlon / 2))
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    d = radius * c
+
+    return d
+
 def get_nodes(filename):
     fh = open(filename, 'r', encoding='utf-8')
     ID_TO_COORDS = {}
@@ -14,8 +33,8 @@ def get_nodes(filename):
             node = Nodes(name=int(ID), latitude=float(LAT), longitude=float(LON), isRoadNode=False)
             node.save()
     fh.close()
-    return ID_TO_COORDS
-def get_edges(filename, ID_TO_COORDS):
+    
+def get_edges(filename):
     fh = open(filename, 'r', encoding='utf-8')
     alldata = fh.read().split('\n')
     fh.close()
@@ -48,25 +67,21 @@ def get_edges(filename, ID_TO_COORDS):
             if alldata[i].startswith('<tag k="highway"'):
                 isRoute = True
         i+=1
-    roadNodes = set()
     for i in edges:
-        coord1 = ID_TO_COORDS[i[0]]
-        coord2 = ID_TO_COORDS[i[1]]
         n1 = Nodes.objects.filter(name=i[0])[0]
+        coord1 = (n1.latitude, n1.longitude)
         n1.isRoadNode = True
         n1.save()
         n2 = Nodes.objects.filter(name=i[1])[0]
+        coord2 = (n2.latitude, n2.longitude)
         n2.isRoadNode = True
         n2.save()
-        #Mark i[0] node and i[1] node as roadnodes
-        roadNodes.add(coord1)
-        roadNodes.add(coord2)
-        dist = ((coord1[0]-coord2[0])**2 + (coord1[1] - coord2[1])**2)**0.5
+        
+        dist = distance(coord1, coord2)
         edge = Edges(node1 = i[0], node2 = i[1], cost=dist)
         edge.save()
-    return roadNodes
 
-def get_destination_nodes(filename, ID_TO_COORDS, roadNodes):
+def get_destination_nodes(filename):
     fh = open(filename, encoding='utf-8')
     data = fh.read().split('\n')
     fh.close()
@@ -94,21 +109,22 @@ def get_destination_nodes(filename, ID_TO_COORDS, roadNodes):
             if data[i].startswith('<tag k="amenity"') or data[i].startswith('<tag k="shop"') or data[i].startswith('<tag k="sport"'):
                 isToBeAdded = True
         i+=1
-    
+    roadNodes = Nodes.objects.filter(isRoadNode=True)
     for i in dests:
-        coord1 = ID_TO_COORDS[i]
+        n1 = Nodes.objects.filter(name=i)[0]
+        coord1 = (n1.latitude, n1.longitude)
         nearestNeighbour = -1
         mindist = float('inf')
         for j in roadNodes:
-            coord2 = ID_TO_COORDS[j]
-            dist = ((coord1[0]-coord2[0])**2 + (coord1[1] - coord2[1])**2)**0.5
+            coord2 = (j.latitude, j.longitude)
+            dist = distance(coord1, coord2)
             if dist<mindist:
                 mindist = dist
-                nearestNeighbour = j
+                nearestNeighbour = j.name
         dn = DestinationNodes(name=i, nearest_neighbour=nearestNeighbour)
         dn.save()
 
-filename = 'raw_data/MAP_Borivali-Kandivali.txt'
-id_to_coords = get_nodes(filename)
-roadNodes = get_edges(filename, id_to_coords)
-get_destination_nodes(filename, id_to_coords, roadNodes)
+filename = 'Maps/raw_data/MAP_Borivali-Kandivali.txt'
+get_nodes(filename)
+get_edges(filename)
+get_destination_nodes(filename)
