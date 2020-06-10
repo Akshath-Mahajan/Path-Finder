@@ -3,7 +3,7 @@ from django.http import HttpResponse
 import folium
 from .models import DestinationNodes
 from .models import Nodes
-from .algorithms import Dijkstra
+from .algorithms import Dijkstra, Dijkstra_2
 
 def home(req):
     return render(req, 'Maps/maps_home.html')
@@ -13,7 +13,7 @@ def map(request):
     #REPLACE LOCATION AND FILL DATABASE
     if request.method == 'POST':
         map1 = folium.Map(location=[19.2120, 72.8567], zoom_start=14)
-        path = Dijkstra(7553183710,7553183709)
+        path = Dijkstra(7553183710,7082370249)
         for i in path:
             print(i)
             ob = Nodes.objects.filter(name=i)[0]
@@ -35,3 +35,7 @@ def map(request):
         m = map1._repr_html_()
         #Add destination nodes to map before returning
         return render(request, 'Maps/maps_map.html', {'map':m})
+r1= Dijkstra(7553183710,7082370249)
+print("H")
+r2 = Dijkstra_2(7553183710,7082370249)
+print(r1 == r2)
