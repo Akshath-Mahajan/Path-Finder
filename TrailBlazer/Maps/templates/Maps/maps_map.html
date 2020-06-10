@@ -3,9 +3,9 @@
 <nav class="controls">
     <form method="POST">
         {%csrf_token%}
-        <input type="number" placeholder="Node 1">
-        <input type="number" placeholder="Node 2">
-        <input type="text" placeholder="Algorithm">
+        <input type="number" placeholder="Source ID", name="source">
+        <input type="number" placeholder="Destination ID", name="destination">
+        <!-- <input type="text" placeholder="Algorithm"> -->
         <input type="submit" value="Search shortest path">
     </form>
 </nav>
