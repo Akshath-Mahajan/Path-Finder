@@ -3,7 +3,7 @@ from django.http import HttpResponse
 import folium
 from .models import DestinationNodes
 from .models import Nodes
-from .algorithms import Dijkstra, Dijkstra_2, Dijkstra_3
+from .algorithms import Dijkstra_4
 
 def home(req):
     return render(req, 'Maps/maps_home.html')
@@ -15,11 +15,19 @@ def map(request):
         map1 = folium.Map(location=[19.2120, 72.8567], zoom_start=14)#LOCATION = s.coords+d.coords/2
         s = request.POST['source']
         d = request.POST['destination']
-        path = Dijkstra_3(s,d)
+        
+        all_nodes = Nodes.objects.all()
+        s_coords = all_nodes.filter(name=s)[0].latitude, all_nodes.filter(name=s)[0].longitude
+        d_coords = all_nodes.filter(name=d)[0].latitude, all_nodes.filter(name=d)[0].longitude
+        print(s,d)
+        path = Dijkstra_4(s,d)
+        coords = []
         for i in path:
-            ob = Nodes.objects.filter(name=i)[0]
-            coord = [ob.latitude, ob.longitude]
-            folium.Marker(location=coord, popup=i).add_to(map1)
+            ob = all_nodes.filter(name=i)[0]
+            coords.append([ob.latitude, ob.longitude])
+        folium.PolyLine(coords, color='red', weight = 4.5).add_to(map1)
+        folium.Marker(s_coords).add_to(map1)
+        folium.Marker(d_coords).add_to(map1)
         m = map1._repr_html_()
         return render(request, 'Maps/maps_map.html', {'map':m})
 
@@ -32,9 +40,3 @@ def map(request):
             folium.Marker(location=coord, popup="NODE ID: "+str(n.name)).add_to(map1)
         m = map1._repr_html_()
         return render(request, 'Maps/maps_map.html', {'map':m})
-# s,v = 7553183710,7553183709
-# Dijkstra_2(s,v)
-# print("HERE")
-# Dijkstra_3(s,v)
-
-#7048041081,1939199158
