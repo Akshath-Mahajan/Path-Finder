@@ -15,7 +15,6 @@ def map(request):
         map1 = folium.Map(location=[19.2120, 72.8567], zoom_start=14)#LOCATION = s.coords+d.coords/2
         s = request.POST['source']
         d = request.POST['destination']
-        
         all_nodes = Nodes.objects.all()
         s_coords = all_nodes.filter(name=s)[0].latitude, all_nodes.filter(name=s)[0].longitude
         d_coords = all_nodes.filter(name=d)[0].latitude, all_nodes.filter(name=d)[0].longitude
@@ -40,3 +39,5 @@ def map(request):
             folium.Marker(location=coord, popup="NODE ID: "+str(n.name)).add_to(map1)
         m = map1._repr_html_()
         return render(request, 'Maps/maps_map.html', {'map':m})
+
+# Proper path not in data for s = 7044039703, d = 7054927767

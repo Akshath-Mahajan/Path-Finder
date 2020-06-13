@@ -1,12 +1,14 @@
 {%extends 'Maps/base.html'%}
+{%block title%}TrailBlazer{%endblock%}
 {%block content%}
 <nav class="controls">
-    <form method="POST">
+    <form>
         {%csrf_token%}
         <input type="number" placeholder="Source ID", name="source">
         <input type="number" placeholder="Destination ID", name="destination">
         <!-- <input type="text" placeholder="Algorithm"> -->
-        <input type="submit" value="Search shortest path">
+        <button type="submit" formmethod="POST">Search Shortest Path</button>
+        <a id="Refresh_Button" href="{%url 'maps-map'%}">Refresh</a>
     </form>
 </nav>
 <div class="map">

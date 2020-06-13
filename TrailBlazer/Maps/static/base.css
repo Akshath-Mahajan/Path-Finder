@@ -21,14 +21,27 @@ header{
     align-items: center;
     justify-content: center;
     width: inherit;
-    height: 90%;
+    height: 80%;
 }
 .startmap{
     font-family: 'Pacifico';
-    font-size: 5vh;
+    font-size: 3vh;
+    text-decoration: none;
+    padding:15px;
+    background-color: #111111bb;
+    color: white;
+    border: #002580 3px solid;
+    border-radius: 15px;
+}
+a.startmap:visited{
+    color: white;
+    text-decoration: none;
+}
+a.startmap:hover{
+    font-size: 3.5vh;
 }
 .content{
-    
+    font-family: 'Cairo';
     border: #000000 2px solid;
     width: 90vw;
     height: 90vh;
@@ -61,4 +74,33 @@ form{
 }
 input{
     text-align: center;
+    height: 35%;
+    border: #000000 solid 2px;
+    border-radius: 10px;
+}
+button{
+    font-family: 'Cairo';
+    background-color:#0d0f86aa;
+    color: whitesmoke;
+    border: #000000 2px solid;
+    height: 45%;
+    border-radius: 10px;
+    
+}
+button:hover{
+    font-size: medium;
+}
+#Refresh_Button{
+    text-decoration: none;
+    color:white;
+    background-color:#0d0f86aa;
+    color: whitesmoke;
+    border: #000000 2px solid;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 10px;
+    text-align: center;
+}
+#Refresh_Button:hover{
+    font-size: large;
 }

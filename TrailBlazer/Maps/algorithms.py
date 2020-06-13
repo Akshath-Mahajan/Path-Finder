@@ -109,7 +109,7 @@ def Dijkstra_3(source, destination):
     A = {nearest_s_ID:0}
     path = {}
     X_SET = [nearest_s_ID]
-    print(time.time()-starttime)
+    #print(time.time()-starttime)
     while X_SET[-1] != nearest_d_ID:
         mincost = float('inf')
         for v in X_SET: #v is ID
@@ -129,7 +129,7 @@ def Dijkstra_3(source, destination):
         X[w_star] = True
         X_SET.append(w_star)
         path[w_star] = v_star
-    print(time.time()-starttime)
+    #print(time.time()-starttime)
     t = nearest_d_ID
     res = []
     while(t != nearest_s_ID):
@@ -141,7 +141,6 @@ def Dijkstra_3(source, destination):
     return res
 
 def Dijkstra_4(source, destination):
-    print("4")
     nearest_s_ID = DestinationNodes.objects.filter(name=source)[0].nearest_neighbour
     nearest_d_ID = DestinationNodes.objects.filter(name=destination)[0].nearest_neighbour
     starttime = time.time()
@@ -174,7 +173,7 @@ def Dijkstra_4(source, destination):
             heap.insert((float('inf'), roadnode.name))
             isInHeap[roadnode.name] = True
     isInHeap[nearest_s_ID] = False
-    print(time.time()-starttime)
+    #print(time.time()-starttime)
     while X_SET[-1] != nearest_d_ID:
         root = heap.extract_min()
         cost_to_add_in_path = root[0]
@@ -201,7 +200,7 @@ def Dijkstra_4(source, destination):
                     if ParentIndex == -1:
                         break
         path[w_star] = v_star
-    print(time.time()-starttime)
+    #print(time.time()-starttime)
     t = nearest_d_ID
     res = []
     while(t != nearest_s_ID):
@@ -209,5 +208,5 @@ def Dijkstra_4(source, destination):
         t = path[t]
     res.append(nearest_s_ID)
     print(time.time()-starttime)
-    print(res)
+    #print(res)
     return res      
