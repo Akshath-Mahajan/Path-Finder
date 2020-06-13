@@ -137,7 +137,7 @@ def Dijkstra_3(source, destination):
         t = path[t]
     res.append(nearest_s_ID)
     print(time.time()-starttime)
-    print(res)
+    #print(res)
     return res
 
 def Dijkstra_4(source, destination):
@@ -193,6 +193,8 @@ def Dijkstra_4(source, destination):
                 index = heap.ID_TO_INDEX[v]
                 heap.arr[index] = min(heap.arr[index], (cost_to_add_in_path+edge.cost, v))
                 ParentIndex = heap.get_parent_index(index)
+                if ParentIndex == -1:
+                    continue    #No need to swap even once if parent index = -1
                 while heap.arr[ParentIndex] > heap.arr[index]:
                     heap.swap(ParentIndex, index)
                     index = ParentIndex
